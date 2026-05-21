@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>SFP Bioscience Derivatives Project</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+        background:linear-gradient(135deg,#fff4e6,#ffe0b2);
+        color:#222;
+        padding:20px;
+    }
+
+    .container{
+        max-width:1100px;
+        margin:auto;
+    }
+
+    .hero{
+        background:white;
+        padding:30px;
+        border-radius:20px;
+        box-shadow:0 8px 25px rgba(0,0,0,0.1);
+        margin-bottom:25px;
+        border-left:10px solid orange;
+    }
+
+    h1{
+        color:#d35400;
+        margin-bottom:15px;
+        font-size:38px;
+    }
+
+    h2{
+        color:#e67e22;
+        margin-bottom:15px;
+    }
+
+    p{
+        line-height:1.8;
+        margin-bottom:15px;
+    }
+
+    .grid{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:20px;
+    }
+
+    .card{
+        background:white;
+        padding:25px;
+        border-radius:18px;
+        box-shadow:0 5px 18px rgba(0,0,0,0.08);
+    }
+
+    .formula{
+        background:#fff3cd;
+        padding:15px;
+        border-radius:12px;
+        margin-top:10px;
+        font-size:20px;
+        font-weight:bold;
+    }
+
+    canvas{
+        background:white;
+        border-radius:18px;
+        padding:15px;
+        margin-top:20px;
+        box-shadow:0 5px 18px rgba(0,0,0,0.08);
+    }
+
+    .result{
+        margin-top:20px;
+        background:#fff8e1;
+        padding:20px;
+        border-radius:15px;
+        border-left:8px solid orange;
+        min-height:120px;
+    }
+
+    .footer{
+        margin-top:30px;
+        text-align:center;
+        color:#555;
+        font-size:14px;
+    }
+
+    ul{
+        padding-left:20px;
+    }
+
+    li{
+        margin-bottom:10px;
+    }
+
+    .highlight{
+        color:#d35400;
+        font-weight:bold;
+    }
+
+    @media(max-width:768px){
+        .grid{
+            grid-template-columns:1fr;
+        }
+
+        h1{
+            font-size:28px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="hero">
+        <h1>Application of Derivatives in Agro Product Technology</h1>
+
+        <p>
+            This project demonstrates how derivatives f'(x) are applied in a realistic
+            Malaysian bioscience scenario involving the drying process of mango slices.
+            In Agro Product Technology, drying is important to preserve food quality,
+            reduce moisture, and extend shelf life.
+        </p>
+
+        <p>
+            The graph below models the moisture content of mango slices during hot air drying.
+            By using derivatives, we can determine how fast moisture is lost at a specific time.
+        </p>
+    </div>
+
+    <div class="grid">
+
+        <div class="card">
+            <h2>Bioscience Problem</h2>
+
+            <p>
+                Mango drying is commonly used in Malaysian agro-food industries.
+                During drying, moisture decreases continuously over time.
+            </p>
+
+            <p>
+                Food scientists use derivatives to measure the
+                <span class="highlight">rate of moisture loss</span>.
+                This helps industries optimize drying efficiency and maintain food quality.
+            </p>
+
+            <p>
+                Faster drying may reduce processing time,
+                while slower drying helps maintain texture and nutrients.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>Mathematical Model</h2>
+
+            <p><strong>Moisture Function:</strong></p>
+
+            <div class="formula">
+                f(x) = 80e<sup>-0.15x</sup> + 10
+            </div>
+
+            <br>
+
+            <p>
+                Where:
+            </p>
+
+            <ul>
+                <li>x = drying time (hours)</li>
+                <li>f(x) = moisture content (%)</li>
+            </ul>
+
+            <br>
+
+            <p><strong>Derivative Function:</strong></p>
+
+            <div class="formula">
+                f'(x) = -12e<sup>-0.15x</sup>
+            </div>
+
+            <br>
+
+            <p>
+                The derivative represents the rate of moisture loss per hour.
+            </p>
+        </div>
+
+    </div>
+
+    <canvas id="chart" height="120"></canvas>
+
+    <div class="result" id="resultBox">
+        <h2>Interactive Derivative Result</h2>
+        <p>Click any point on the graph to see the derivative value and explanation.</p>
+    </div>
+
+    <div class="card" style="margin-top:25px;">
+        <h2>Realistic Malaysian Data Sources</h2>
+
+        <ul>
+            <li>MARDI Malaysia - Malaysian Agricultural Research and Development Institute</li>
+            <li>Department of Agriculture Malaysia (DOA)</li>
+            <li>FAOSTAT Food Processing Data</li>
+            <li>Food drying and moisture studies from Malaysian agro-food journals</li>
+        </ul>
+
+        <br>
+
+        <p>
+            Website References:
+        </p>
+
+        <ul>
+            <li>https://www.mardi.gov.my</li>
+            <li>https://www.doa.gov.my</li>
+            <li>https://www.fao.org/faostat</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <p>
+            SFP Derivatives Project | Agro Product Technology | Malaysia Bioscience Application
+        </p>
+    </div>
+
+</div>
+
+<script>
+
+const labels = [];
+const moistureData = [];
+
+for(let x = 0; x <= 20; x++){
+    labels.push(x);
+
+    let fx = 80 * Math.exp(-0.15 * x) + 10;
+    moistureData.push(fx.toFixed(2));
+}
+
+const ctx = document.getElementById('chart');
+
+const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Moisture Content (%)',
+            data: moistureData,
+            borderColor: '#e67e22',
+            backgroundColor: 'rgba(230,126,34,0.2)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 5,
+            pointHoverRadius: 8
+        }]
+    },
+
+    options: {
+
+        responsive:true,
+
+        animation:{
+            duration:2500
+        },
+
+        plugins:{
+            legend:{
+                labels:{
+                    font:{
+                        size:16
+                    }
+                }
+            },
+
+            tooltip:{
+                callbacks:{
+                    label:function(context){
+                        return " Moisture: " + context.parsed.y + "%";
+                    }
+                }
+            }
+        },
+
+        scales:{
+
+            x:{
+                title:{
+                    display:true,
+                    text:'Drying Time (Hours)',
+                    font:{
+                        size:16
+                    }
+                }
+            },
+
+            y:{
+                title:{
+                    display:true,
+                    text:'Moisture Content (%)',
+                    font:{
+                        size:16
+                    }
+                }
+            }
+
+        },
+
+        onClick:(e, elements)=>{
+
+            if(elements.length > 0){
+
+                const index = elements[0].index;
+                const x = labels[index];
+
+                const fx = 80 * Math.exp(-0.15 * x) + 10;
+
+                const derivative = -12 * Math.exp(-0.15 * x);
+
+                let explanation = "";
+
+                if(Math.abs(derivative) > 7){
+                    explanation =
+                    "The mango is drying very quickly at this stage because heat removes water efficiently.";
+                }
+
+                else if(Math.abs(derivative) > 4){
+                    explanation =
+                    "The drying process is still active, but moisture removal is becoming slower.";
+                }
+
+                else{
+                    explanation =
+                    "The mango is nearly dry, so moisture is removed slowly.";
+                }
+
+                document.getElementById("resultBox").innerHTML = `
+                    <h2>Interactive Derivative Result</h2>
+
+                    <p><strong>Time:</strong> ${x} hours</p>
+
+                    <p><strong>Moisture Content f(x):</strong> ${fx.toFixed(2)}%</p>
+
+                    <p><strong>Derivative f'(x):</strong> ${derivative.toFixed(2)} % per hour</p>
+
+                    <p><strong>Layman Explanation:</strong> ${explanation}</p>
+                `;
+            }
+        }
+    }
+});
+
+</script>
+
+</body>
+</html>
